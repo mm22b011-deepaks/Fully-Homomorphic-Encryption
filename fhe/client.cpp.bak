@@ -1,0 +1,62 @@
+#include <iostream>
+#include <fstream>
+#include <seal/seal.h>
+
+using namespace std;
+using namespace seal;
+
+int main() {
+    // Setup encryption parameters
+    EncryptionParameters parms(scheme_type::bfv);
+    parms.set_poly_modulus_degree(4096);
+    parms.set_coeff_modulus(CoeffModulus::BFVDefault(4096));
+    parms.set_plain_modulus(PlainModulus::Batching(4096, 20));
+    SEALContext context(parms);
+
+    // Key generation
+    KeyGenerator keygen(context);
+    PublicKey public_key;
+    keygen.create_public_key(public_key);
+    SecretKey secret_key = keygen.secret_key();
+
+    // Save keys to files
+    {
+        ofstream pk_out("public.key", ios::binary);
+        public_key.save(pk_out);
+    }
+    {
+        ofstream sk_out("secret.key", ios::binary);
+        secret_key.save(sk_out);
+    }
+
+    // Read number from plaintext file
+    int input;
+    ifstream infile("number.txt");
+    if (!(infile >> input)) {
+        cerr << "Failed to read number from number.txt\n";
+        return 1;
+    }
+
+    // Use BatchEncoder instead of IntegerEncoder
+    BatchEncoder batch_encoder(context);
+
+    // Encode input as a batch (fill vector with zeros except first element)
+    vector<uint64_t> pod_vector(batch_encoder.slot_count(), 0ULL);
+    pod_vector[0] = static_cast<uint64_t>(input);
+
+    Plaintext plain;
+    batch_encoder.encode(pod_vector, plain);
+
+    // Encrypt the plaintext
+    Encryptor encryptor(context, public_key);
+    Ciphertext encrypted;
+    encryptor.encrypt(plain, encrypted);
+
+    // Save encrypted data
+    ofstream ct_out("input.ct", ios::binary);
+    encrypted.save(ct_out);
+
+    cout << "Client: Encrypted " << input << " and saved to input.ct\n";
+    return 0;
+}
+
