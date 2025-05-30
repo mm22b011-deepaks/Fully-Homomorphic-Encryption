@@ -19,6 +19,8 @@ It consists of two programs:
 ## Building
 
 ```bash
+cd Fully-Homomorphic-Encryption
+cd fhe
 mkdir build
 cd build
 cmake -DSEAL_DIR=../../seal-install/lib/cmake/SEAL-4.1 ..
