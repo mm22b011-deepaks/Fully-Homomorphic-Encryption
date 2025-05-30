@@ -23,7 +23,7 @@ cd Fully-Homomorphic-Encryption
 cd fhe
 mkdir build
 cd build
-cmake -DSEAL_DIR=../../seal-install/lib/cmake/SEAL-4.1 ..
+cmake -DSEAL_DIR=/absolute-path-to/seal-install/lib/cmake/SEAL-4.1 ..
 make -j$(nproc)
 ```
 
