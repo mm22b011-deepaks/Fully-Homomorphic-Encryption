@@ -1,4 +1,0 @@
-/home/depk/Fully-Homomorphic-Encryption/fhe/build/CMakeFiles/client.dir
-/home/depk/Fully-Homomorphic-Encryption/fhe/build/CMakeFiles/server.dir
-/home/depk/Fully-Homomorphic-Encryption/fhe/build/CMakeFiles/edit_cache.dir
-/home/depk/Fully-Homomorphic-Encryption/fhe/build/CMakeFiles/rebuild_cache.dir

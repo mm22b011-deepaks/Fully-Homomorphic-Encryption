@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/depk/Fully-Homomorphic-Encryption/fhe/build/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
